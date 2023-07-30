@@ -2,6 +2,7 @@
 # Made for OBS Studio and Windows 10/11
 # Made by: @CoccodrillooXDS
 # Version: 1.0.0
+# MIT License
 
 # Create variables for title, message, icon, appID and the required module
 $title = ""

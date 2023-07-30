@@ -1,6 +1,7 @@
 -- Lua script
 -- Made for OBS Studio
 -- Made by: @CoccodrillooXDS
+-- MIT License
 
 -- Import OBS libraries and create global variables
 obs = obslua
