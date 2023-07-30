@@ -17,7 +17,7 @@ function send_notification(title, message)
     -- Check if the OS is Windows, macOS or Linux and send the notification accordingly
     if package.config:sub(1,1) == '\\' then
         -- Windows
-        os.execute('start /min conhost powershell -WindowStyle Hidden -ExecutionPolicy Bypass -File "' .. script_path .. 'powershell.ps1" -Title "' .. title .. '" -Message "' .. message .. '"')
+        os.execute('start /min conhost powershell -WindowStyle Hidden -ExecutionPolicy Bypass -File "' .. script_path .. 'notifications.ps1" -Title "' .. title .. '" -Message "' .. message .. '"')
     elseif package.config:sub(1,1) == '/' then
         -- macOS or Linux
         if os.execute('uname -s | grep Darwin > /dev/null') then
@@ -81,7 +81,7 @@ function script_load(settings)
         local info = debug.getinfo(1, "S")
         script_path = info.source:match[[^@?(.*[\/])[^\/]-$]]
 
-        os.execute('start /min conhost powershell -ExecutionPolicy Bypass -File "' .. script_path .. 'powershell.ps1" setup')
+        os.execute('start /min conhost powershell -ExecutionPolicy Bypass -File "' .. script_path .. 'notifications.ps1" setup')
 
     end
     print("Script loaded")
