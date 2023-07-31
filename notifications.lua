@@ -6,7 +6,7 @@
 -- Import OBS libraries and create global variables
 obs = obslua
 script_path = ""
-version = "1.0.0"
+version = "2.0.0"
 
 -- Function to send a notification to the desktop
 -- OS: Windows, macOS, Linux
@@ -17,7 +17,9 @@ function send_notification(title, message)
     -- Check if the OS is Windows, macOS or Linux and send the notification accordingly
     if package.config:sub(1,1) == '\\' then
         -- Windows
-        os.execute('start /min conhost powershell -WindowStyle Hidden -ExecutionPolicy Bypass -File "' .. script_path .. 'notifications.ps1" -Title "' .. title .. '" -Message "' .. message .. '"')
+        local file = io.open(script_path .. 'notifications.txt', 'w')
+        file:write(title .. ',' .. message .. '\n')
+        file:close()
     elseif package.config:sub(1,1) == '/' then
         -- macOS or Linux
         if os.execute('uname -s | grep Darwin > /dev/null') then

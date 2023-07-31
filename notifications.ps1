@@ -1,7 +1,7 @@
 # PowerShell script
 # Made for OBS Studio and Windows 10/11
 # Made by: @CoccodrillooXDS
-# Version: 1.0.0
+# Version: 2.0.0
 # MIT License
 
 # Create variables for title, message, icon, appID and the required module
@@ -11,13 +11,35 @@ $icon = "icon.ico"
 $appId = "{6D809377-6AF0-444B-8957-A3773F02200E}\obs-studio\bin\64bit\obs64.exe"
 $module = "BurntToast"
 $why = "show notifications on Windows"
+$notif_file = "notifications.txt"
 
 # Set the current directory to the script's directory to make sure the icon is found
 Set-Location $PSScriptRoot
 
 # If the first argument is "setup", continue the script, otherwise check if -Title and -Message parameters are set
 if ($args[0] -eq "setup") {
-    # Continue the script
+    # Get all "powershell.exe" processes
+    $processes = Get-WmiObject Win32_Process -Filter "Name = 'powershell.exe'"
+
+    # Filter processes that have the script name "notifications.ps1" in their command line
+    $filteredProcesses = $processes | Where-Object { $_.CommandLine -like '*notifications.ps1*' }
+
+    # Stop each PowerShell process in $filteredProcesses
+    # Get the current script's process ID
+    $CurrentProcessId = $PID
+    
+    # Stop each PowerShell process in $filteredProcesses except the current script's process
+    $filteredProcesses | ForEach-Object {
+        $processId = $_.ProcessId
+        if ($processId -ne $CurrentProcessId) {
+            Stop-Process -Id $processId -Force
+        }
+    }
+
+
+    # Empty the notifications file
+    Set-Content $notif_file $null
+
 } elseif ($args[0] -eq "-Title" -and $args[2] -eq "-Message") {
     # Set the title and the message of the notification
     $title = $args[1]
@@ -116,5 +138,28 @@ if (-not (IsModuleInstalled($module))) {
         # Sleep for 2 seconds to make sure the user sees the message
         Start-Sleep -s 2
         exit 1
+    }
+}
+
+while ($true) {
+    # Sleep for 2 seconds to avoid high CPU usage
+    Start-Sleep -Seconds 2
+    # Get the first line of the file
+    $line = Get-Content $notif_file | Select-Object -First 1
+    # If the line contains ",", split it into title and message and send the notification
+    if ($line -like "*,*") {
+        $title = $line.Split(",")[0]
+        $message = $line.Split(",")[1]
+        if ($title -ne "" -and $message -ne "") {
+            $content = Get-Content $notif_file | Where-Object { $_ -ne $line }
+            Set-Content $notif_file $content
+            if ($title -eq "stop" -and $message -eq "stop") {
+                exit 0
+            }
+            New-BurntToastNotification -Text $title,$message -AppLogo $icon -AppId $appId
+        }
+    } elseif ($line -eq "") {
+        $content = Get-Content $notif_file | Where-Object { $_ -ne $line }
+        Set-Content $notif_file $content
     }
 }
