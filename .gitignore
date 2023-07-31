@@ -1,0 +1,11 @@
+# Ignore IDE files
+.vscode/
+.idea/
+.project
+.classpath
+.settings/
+
+# Ignore .txt and temp files
+*.txt
+tmp/
+temp/
