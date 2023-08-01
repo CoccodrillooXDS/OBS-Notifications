@@ -27,7 +27,7 @@ It is designed for [OBS Studio](https://obsproject.com/) and should also work wi
 - notify-send (*Linux only*);
 
 # Installation
-1. Download the latest release from the [Releases](https://github.com/CoccodrillooXDS/OBS-Notifications/releases) page;
+1. Download the latest version from the [Releases](https://github.com/CoccodrillooXDS/OBS-Notifications/releases) page;
 2. Extract the archive to a folder of your choice;
 3. Open OBS Studio;
 4. Go to `Tools` > `Scripts`;
