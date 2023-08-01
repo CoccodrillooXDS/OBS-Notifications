@@ -36,7 +36,6 @@ if ($args[0] -eq "setup") {
         }
     }
 
-
     # Empty the notifications file
     Set-Content $notif_file $null
 
@@ -150,14 +149,13 @@ while ($true) {
     if ($line -like "*,*") {
         $title = $line.Split(",")[0]
         $message = $line.Split(",")[1]
+        # If the title and the message are not empty, remove the line from the file and send the notification
         if ($title -ne "" -and $message -ne "") {
             $content = Get-Content $notif_file | Where-Object { $_ -ne $line }
             Set-Content $notif_file $content
-            if ($title -eq "stop" -and $message -eq "stop") {
-                exit 0
-            }
             New-BurntToastNotification -Text $title,$message -AppLogo $icon -AppId $appId
         }
+    # If the line is empty, remove it from the file
     } elseif ($line -eq "") {
         $content = Get-Content $notif_file | Where-Object { $_ -ne $line }
         Set-Content $notif_file $content
