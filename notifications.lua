@@ -17,7 +17,7 @@ function send_notification(title, message)
     -- Check if the OS is Windows, macOS or Linux and send the notification accordingly
     if package.config:sub(1,1) == '\\' then
         -- Windows
-        local file = io.open(script_path .. 'notifications.txt', 'w')
+        local file = io.open(script_path .. 'notifications.txt', 'a')
         file:write(title .. ',' .. message .. '\n')
         file:close()
     elseif package.config:sub(1,1) == '/' then
@@ -58,6 +58,14 @@ function on_event(event)
     if event == obs.OBS_FRONTEND_EVENT_RECORDING_STOPPED then
         print("Recording Stopped")
         send_notification('Recording', 'Recording stopped!')
+    end
+    if event == obs.OBS_FRONTEND_EVENT_RECORDING_PAUSED then
+        print("Recording Paused")
+        send_notification('Recording', 'Recording paused!')
+    end
+    if event == obs.OBS_FRONTEND_EVENT_RECORDING_UNPAUSED then
+        print("Recording Resumed")
+        send_notification('Recording', 'Recording resumed!')
     end
 end
 
