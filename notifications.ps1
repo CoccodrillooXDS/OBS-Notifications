@@ -1,7 +1,7 @@
 # PowerShell script
 # Made for OBS Studio and Windows 10/11
 # Made by: @CoccodrillooXDS
-# Version: 2.0.0
+# Version: 2.0.1
 # MIT License
 
 # Create variables for title, message, icon, appID and the required module

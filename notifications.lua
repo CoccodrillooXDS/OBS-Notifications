@@ -6,7 +6,7 @@
 -- Import OBS libraries and create global variables
 obs = obslua
 script_path = ""
-version = "2.0.0"
+version = "2.0.1"
 
 -- Function to send a notification to the desktop
 -- OS: Windows, macOS, Linux
